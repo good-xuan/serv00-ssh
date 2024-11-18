@@ -4,18 +4,14 @@ on:
   schedule:
     # 每天凌晨 1 点运行
     - cron: '0 1 * * *'
+  workflow_dispatch:
 
 jobs:
   ssh-login:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: S1
         uses: actions/checkout@v3
 
-      - name: Set up SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
 
