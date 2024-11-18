@@ -1,0 +1,31 @@
+name: Daily SSH Key Login
+
+on:
+  schedule:
+    # 每天凌晨 1 点运行
+    - cron: '0 1 * * *'
+
+jobs:
+  ssh-login:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        server:
+          - { ip: ${{ secrets.SERVER_1_IP }}, user: ${{ secrets.SERVER_1_USER }} }
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ matrix.server.ip }}" >> ~/.ssh/known_hosts
+
+      - name: SSH Login and Execute Commands
+        run: |
+          ssh "${{ matrix.server.user }}@${{ matrix.server.ip }}" <<EOF
+          EOF
