@@ -22,7 +22,7 @@ jobs:
     - name: user2
       uses: appleboy/ssh-action@v1.2.0
       with:
-        host: ${{ secrets.S12 }}
+        host: ${{ secrets.S13 }}
         username: ${{ secrets.USER2 }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: ls
