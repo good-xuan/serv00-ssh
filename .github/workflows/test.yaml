@@ -11,8 +11,8 @@ jobs:
     steps:
     - name: test1
       run: |
-        whoami
-        ls
-        date
+        chmod +x 1.sh
+        bash ./1.sh
+    
         
     
