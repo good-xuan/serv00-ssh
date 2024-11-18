@@ -17,27 +17,27 @@ jobs:
         host: ${{ secrets.S12 }}
         username: ${{ secrets.USER1 }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: ls ~/domains
+        script: ls 
     - name: user2
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.S13 }}
         username: ${{ secrets.USER2 }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: ls ~/domains
+        script: ls 
     - name: user3
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.S13 }}
         username: ${{ secrets.USER3 }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: ls ~/domains
+        script: ls 
     - name: user4
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.S13 }}
         username: ${{ secrets.USER4 }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: ls ~/domains
+        script: ls 
 
 
