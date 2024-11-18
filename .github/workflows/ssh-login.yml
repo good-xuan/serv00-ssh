@@ -1,0 +1,34 @@
+name: Daily SSH Multi-Login
+
+on:
+  schedule:
+    # 每天凌晨 1 点运行
+    - cron: '0 1 * * *'
+
+jobs:
+  ssh-login:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        server:
+          - { ip: ${{ secrets.SERVER_1_IP }}, user: ${{ secrets.SERVER_1_USER }}, pass: ${{ secrets.SERVER_1_PASS }} }
+          - { ip: ${{ secrets.SERVER_2_IP }}, user: ${{ secrets.SERVER_2_USER }}, pass: ${{ secrets.SERVER_2_PASS }} }
+          # 添加更多服务器到此处
+          # - { ip: ${{ secrets.SERVER_3_IP }}, user: ${{ secrets.SERVER_3_USER }}, pass: ${{ secrets.SERVER_3_PASS }} }
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install SSH Client
+        run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
+
+      - name: SSH Login to Each Server
+        run: |
+          echo "${{ matrix.server.pass }}" > password.txt
+          chmod 600 password.txt
+          sshpass -f password.txt ssh -o StrictHostKeyChecking=no "${{ matrix.server.user }}@${{ matrix.server.ip }}" <<EOF
+          echo "SSH"
+          EOF
+          rm -f password.txt
