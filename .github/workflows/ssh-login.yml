@@ -7,16 +7,8 @@ on:
 
 jobs:
   ssh-login:
-    runs-on: ubuntu-latest
+    runs-on: debian-latest
 
-    strategy:
-      matrix:
-        server:
-          - { ip: ${{ secrets.SERVER_1_IP }}, user: ${{ secrets.SERVER_1_USER }} }
-          # - { ip: ${{ secrets.SERVER_2_IP }}, user: ${{ secrets.SERVER_2_USER }} }
-          # 添加更多服务器到此处
-          # - { ip: ${{ secrets.SERVER_3_IP }}, user: ${{ secrets.SERVER_3_USER }} }
-          # - { ip: ${{ secrets.SERVER_4_IP }}, user: ${{ secrets.SERVER_4_USER }} }
 
     steps:
       - name: Checkout code
