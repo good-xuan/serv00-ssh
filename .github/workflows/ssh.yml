@@ -2,7 +2,6 @@ name: Daily SSH Key Login
 
 on:
   schedule:
-    # 每天凌晨 1 点运行
     - cron: '0 1 * * *'
   workflow_dispatch:
 
@@ -10,7 +9,7 @@ jobs:
 
   ssh-login:
     name: ssh-login
-    runs-on: ubuntu-latest
+    runs-on: debian-latest
     steps:
     - name: user1
       uses: appleboy/ssh-action@v1.2.0
