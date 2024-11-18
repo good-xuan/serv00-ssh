@@ -1,0 +1,35 @@
+name: Daily SSH Login
+
+on:
+  schedule:
+    # 每天凌晨 1 点运行
+    - cron: '0 1 * * *'
+
+jobs:
+  ssh-login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install SSH Client
+        run: sudo apt-get update && sudo apt-get install -y openssh-client
+
+      - name: SSH Login and Execute Command
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASS: ${{ secrets.SERVER_PASS }}
+        run: |
+          # 将密码写入 SSH 密钥文件
+          echo "${SERVER_PASS}" > password.txt
+          chmod 600 password.txt
+          # 使用 sshpass 自动化登录
+          sudo apt-get install -y sshpass
+          sshpass -f password.txt ssh -o StrictHostKeyChecking=no "${SERVER_USER}@${SERVER_IP}" <<EOF
+          echo "SSH 登录成功！这是每日任务执行。"
+          # 在这里可以添加更多命令
+          EOF
+          # 清理密码文件
+          rm -f password.txt
