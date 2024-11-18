@@ -9,7 +9,7 @@ jobs:
 
   ssh-login:
     name: ssh-login
-    runs-on: debian-latest
+    runs-on: unbuntu-latest
     steps:
     - name: user1
       uses: appleboy/ssh-action@v1.2.0
