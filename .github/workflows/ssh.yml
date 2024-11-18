@@ -8,8 +8,8 @@ on:
 
 jobs:
 
-  build:
-    name: Build
+  ssh-login:
+    name: ssh-login
     runs-on: ubuntu-latest
     steps:
     - name: user1
@@ -18,14 +18,14 @@ jobs:
         host: ${{ secrets.S12 }}
         username: ${{ secrets.USER1 }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: ls
+        script: whoami
     - name: user2
       uses: appleboy/ssh-action@v1.2.0
       with:
         host: ${{ secrets.S13 }}
         username: ${{ secrets.USER2 }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: ls
+        script: whoami
     - name: user3
       uses: appleboy/ssh-action@v1.2.0
       with:
