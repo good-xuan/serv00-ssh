@@ -1,4 +1,4 @@
-name: Daily SSH Key Login
+name: SSH-CI
 
 on:
   schedule:
