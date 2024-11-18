@@ -1,4 +1,4 @@
-name: Daily SSH Multi-Login
+name: Daily SSH Key Login
 
 on:
   schedule:
@@ -12,23 +12,26 @@ jobs:
     strategy:
       matrix:
         server:
-          - { ip: ${{ secrets.SERVER_1_IP }}, user: ${{ secrets.SERVER_1_USER }}, pass: ${{ secrets.SERVER_1_PASS }} }
-          - { ip: ${{ secrets.SERVER_2_IP }}, user: ${{ secrets.SERVER_2_USER }}, pass: ${{ secrets.SERVER_2_PASS }} }
+          - { ip: ${{ secrets.SERVER_1_IP }}, user: ${{ secrets.SERVER_1_USER }} }
+          - { ip: ${{ secrets.SERVER_2_IP }}, user: ${{ secrets.SERVER_2_USER }} }
           # 添加更多服务器到此处
-          # - { ip: ${{ secrets.SERVER_3_IP }}, user: ${{ secrets.SERVER_3_USER }}, pass: ${{ secrets.SERVER_3_PASS }} }
+          # - { ip: ${{ secrets.SERVER_3_IP }}, user: ${{ secrets.SERVER_3_USER }} }
+          # - { ip: ${{ secrets.SERVER_4_IP }}, user: ${{ secrets.SERVER_4_USER }} }
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install SSH Client
-        run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
-
-      - name: SSH Login to Each Server
+      - name: Set up SSH Key
         run: |
-          echo "${{ matrix.server.pass }}" > password.txt
-          chmod 600 password.txt
-          sshpass -f password.txt ssh -o StrictHostKeyChecking=no "${{ matrix.server.user }}@${{ matrix.server.ip }}" <<EOF
-          echo "SSH"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ matrix.server.ip }}" >> ~/.ssh/known_hosts
+
+      - name: SSH Login and Execute Commands
+        run: |
+          ssh "${{ matrix.server.user }}@${{ matrix.server.ip }}" <<EOF
+          echo "SSH 登录成功！这是每日任务执行。"
+          # 在这里可以添加更多命令
           EOF
-          rm -f password.txt
