@@ -9,11 +9,6 @@ jobs:
   ssh-login:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        server:
-          - { ip: ${{ secrets.SERVER_1_IP }}, user: ${{ secrets.SERVER_1_USER }} }
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,9 +18,3 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "${{ matrix.server.ip }}" >> ~/.ssh/known_hosts
-
-      - name: SSH Login and Execute Commands
-        run: |
-          ssh "${{ matrix.server.user }}@${{ matrix.server.ip }}" <<EOF
-          EOF
