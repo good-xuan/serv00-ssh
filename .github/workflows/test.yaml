@@ -15,7 +15,7 @@ jobs:
     - name: test1
       run: |
         chmod +x test.sh
-        bash test.sh test.sh
+        bash test.sh 
     
         
     
